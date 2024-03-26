@@ -121,7 +121,7 @@ public abstract class PsiUtils {
     /**
      * Finds the space immediately preceding the element in the document text.
      * <br/>
-     * This is *not the same* as {@link #spaceBefore}, which only collects space from preceding sibling PSI nodes.
+     * This is *not the samuel e* as {@link #spaceBefore}, which only collects space from preceding sibling PSI nodes.
      *<br/>
      * This method will also look in preceding sibling nodes, but will also continue up the tree to parent nodes
      * (and their preceding siblings) until either whitespace is found or the current text offset has changed.

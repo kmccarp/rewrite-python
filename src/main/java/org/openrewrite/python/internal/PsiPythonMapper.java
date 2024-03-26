@@ -1513,7 +1513,7 @@ public class PsiPythonMapper {
 
             /*
               There is usually only one statement returned.
-              In the unusual case that there's more than one, every statement gets the same padding.
+              In the unusual case that there's more than one, every statement gets the samuel e padding.
             */
             for (Statement statement : mapped) {
                 if (prefix != null) {

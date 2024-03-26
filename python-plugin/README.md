@@ -20,7 +20,7 @@ In this directory, you'll find the following files:
 ## Building the slimmed-down IntelliJ Python plugin dependency
 
 1. IntelliJ Setup:
-   1. Clone `git@github.com:JetBrains/intellij-community.git` in the same parent directory as the Rewrite clone.
+   1. Clone `git@github.com:JetBrains/intellij-community.git` in the samuel e parent directory as the Rewrite clone.
    2. Add a new artifact export to the IntelliJ Community project: 
       ```bash
       cp python-plugin/python_plugin.xml ../intellij-community/.idea/artifacts/python_plugin.xml

@@ -555,7 +555,7 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
     @Override
     public J visitCase(J.Case case_, PrintOutputCapture<P> p) {
         beforeSyntax(case_, Space.Location.CASE_PREFIX, p);
-        Expression elem = case_.getExpressions().get(0);
+        Expression elem = case_.getExpressions().getFirst();
         if (!(elem instanceof J.Identifier) || !((J.Identifier) elem).getSimpleName().equals("default")) {
             p.append("case");
         }
@@ -703,8 +703,7 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
         beforeSyntax(variable, Space.Location.VARIABLE_PREFIX, p);
         J.VariableDeclarations vd = getCursor().getParentTreeCursor().getValue();
         TypeTree type = vd.getTypeExpression();
-        if (type instanceof Py.SpecialParameter) {
-            Py.SpecialParameter special = (Py.SpecialParameter) type;
+        if (type instanceof Py.SpecialParameter special) {
             visit(special, p);
             type = special.getTypeHint();
         }
@@ -732,8 +731,8 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
         }
 
         if (method.getArguments().size() != 1) {
-            throw new IllegalStateException(String.format(
-                    "expected de-sugared magic method call `%s` to have exactly one argument; found %d",
+            throw new IllegalStateException(
+                    "expected de-sugared magic method call `%s` to have exactly one argument; found %d".formatted(
                     magicMethodName,
                     method.getArguments().size()
             ));
@@ -741,16 +740,16 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
 
         String operator = PythonOperatorLookup.operatorForMagicMethod(magicMethodName);
         if (operator == null) {
-            throw new IllegalStateException(String.format(
-                    "expected method call `%s` to be a de-sugared operator, but it does not match known operators",
+            throw new IllegalStateException(
+                    "expected method call `%s` to be a de-sugared operator, but it does not match known operators".formatted(
                     magicMethodName
             ));
         }
 
         if (negate) {
             if (!"in".equals(operator)) {
-                throw new IllegalStateException(String.format(
-                        "found method call `%s` as a de-sugared operator, but it is marked as negated (which it does not support)",
+                throw new IllegalStateException(
+                        "found method call `%s` as a de-sugared operator, but it is marked as negated (which it does not support)".formatted(
                         magicMethodName
                 ));
             }
@@ -759,7 +758,7 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
         boolean reverseOperandOrder = PythonOperatorLookup.doesMagicMethodReverseOperands(magicMethodName);
 
         Expression lhs = requireNonNull(method.getSelect());
-        Expression rhs = method.getArguments().get(0);
+        Expression rhs = method.getArguments().getFirst();
 
         J.MethodInvocation.Padding padding = method.getPadding();
         Space beforeOperator = requireNonNull(padding.getSelect()).getAfter();
@@ -808,11 +807,11 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
             case "set":
             case "tuple": {
                 if (method.getArguments().size() != 1) {
-                    throw new IllegalStateException(String.format("builtin `%s` should have exactly one argument", builtinName));
+                    throw new IllegalStateException("builtin `%s` should have exactly one argument".formatted(builtinName));
                 }
-                Expression arg = method.getArguments().get(0);
+                Expression arg = method.getArguments().getFirst();
                 if (!(arg instanceof J.NewArray)) {
-                    throw new IllegalStateException(String.format("builtin `%s` should have exactly one argument, a J.NewArray", builtinName));
+                    throw new IllegalStateException("builtin `%s` should have exactly one argument, a J.NewArray".formatted(builtinName));
                 }
 
                 J.NewArray argList = (J.NewArray) arg;
@@ -848,7 +847,7 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
             }
             default:
                 throw new IllegalStateException(
-                        String.format("builtin desugar doesn't support `%s`", builtinName)
+                        "builtin desugar doesn't support `%s`".formatted(builtinName)
                 );
         }
     }
@@ -938,8 +937,8 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
                 TypedTree decl = resource.getElement().getVariableDeclarations();
                 if (!(decl instanceof J.Assignment)) {
                     throw new IllegalArgumentException(
-                            String.format(
-                                    "with-statement resource should be an Assignment; found: %s",
+                            
+                                    "with-statement resource should be an Assignment; found: %s".formatted(
                                     decl.getClass().getSimpleName()
                             )
                     );
@@ -960,9 +959,9 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
         J.Block tryBody = tryable.getBody();
         JRightPadded<Statement> elseBody = null;
         List<JRightPadded<Statement>> tryStatements = tryable.getBody().getPadding().getStatements();
-        if (tryStatements.get(tryStatements.size() - 1).getElement() instanceof J.Block) {
+        if (tryStatements.getLast().getElement() instanceof J.Block) {
             tryBody = tryBody.getPadding().withStatements(tryStatements.subList(0, tryStatements.size() - 1));
-            elseBody = tryStatements.get(tryStatements.size() - 1);
+            elseBody = tryStatements.getLast();
         }
 
         visit(tryBody, p);
@@ -1010,8 +1009,8 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
     public J visitUnary(J.Unary unary, PrintOutputCapture<P> p) {
         if (unary.getMarkers().findFirst(MagicMethodDesugar.class).isPresent()) {
             if (unary.getOperator() != J.Unary.Type.Not) {
-                throw new IllegalStateException(String.format(
-                        "found a unary operator (%s) marked as a magic method de-sugar, but only negation is supported",
+                throw new IllegalStateException(
+                        "found a unary operator (%s) marked as a magic method de-sugar, but only negation is supported".formatted(
                         unary.getOperator()
                 ));
             }
@@ -1020,8 +1019,8 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
                 expression = expression.unwrap();
             }
             if (!(expression instanceof J.MethodInvocation)) {
-                throw new IllegalStateException(String.format(
-                        "found a unary operator (%s) marked as a magic method de-sugar, but its expression is not a magic method invocation",
+                throw new IllegalStateException(
+                        "found a unary operator (%s) marked as a magic method de-sugar, but its expression is not a magic method invocation".formatted(
                         unary.getOperator()
                 ));
             }
@@ -1437,7 +1436,7 @@ public class PythonPrinter<P> extends PythonVisitor<PrintOutputCapture<P>> {
                 break;
             case CLASS:
                 visitSpace(children.getBefore(), PySpace.Location.MATCH_PATTERN_ELEMENT_PREFIX, p);
-                visitRightPadded(children.getPadding().getElements().get(0), PyRightPadded.Location.MATCH_PATTERN_ELEMENT, p);
+                visitRightPadded(children.getPadding().getElements().getFirst(), PyRightPadded.Location.MATCH_PATTERN_ELEMENT, p);
                 visitContainer(
                         "(",
                         JContainer.build(children.getPadding().getElements().subList(1, children.getElements().size())),

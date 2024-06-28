@@ -42,8 +42,7 @@ public abstract class PsiUtils {
     }
 
     public static boolean isLeafToken(@Nullable PsiElement element, PyElementType elementType) {
-        if (element instanceof LeafPsiElement) {
-            LeafPsiElement leaf = (LeafPsiElement) element;
+        if (element instanceof LeafPsiElement leaf) {
             return leaf.getElementType() == elementType;
         }
         return false;
@@ -74,8 +73,8 @@ public abstract class PsiUtils {
         @Nullable PsiElement maybeMatch = maybeFindFirstChildToken(parent, elementType, otherElementTypes);
         if (maybeMatch == null) {
             throw new IllegalStateException(
-                    String.format(
-                            "Expected to find a child node of type %s (+%d others) match but found none",
+                    
+                            "Expected to find a child node of type %s (+%d others) match but found none".formatted(
                             elementType,
                             otherElementTypes.length
                     )
@@ -89,8 +88,8 @@ public abstract class PsiUtils {
         PsiElement found = maybeFindChildToken(parent, elementType);
         if (found == null) {
             throw new IllegalStateException(
-                    String.format(
-                            "Expected to find a child node of type %s match but found none",
+                    
+                            "Expected to find a child node of type %s match but found none".formatted(
                             elementType
                     )
             );
@@ -168,8 +167,8 @@ public abstract class PsiUtils {
         LeafPsiElement found = maybeFindPreviousSiblingToken(element, elementType);
         if (found == null) {
             throw new IllegalStateException(
-                    String.format(
-                            "Expected to find a previous sibling of type %s match but found none",
+                    
+                            "Expected to find a previous sibling of type %s match but found none".formatted(
                             elementType
                     )
             );
@@ -299,8 +298,8 @@ public abstract class PsiUtils {
 
             if (!commentText.startsWith("#")) {
                 throw new IllegalStateException(
-                        String.format(
-                                "expected Python comment to start with `#`; found: `%s`",
+                        
+                                "expected Python comment to start with `#`; found: `%s`".formatted(
                                 commentText.charAt(0)
                         )
                 );
@@ -347,8 +346,8 @@ public abstract class PsiUtils {
         public <T extends PsiElement> T consumeExpectingType(Class<T> clazz) {
             PsiElement element = consume();
             if (!clazz.isInstance(element)) {
-                throw new IllegalStateException(String.format(
-                        "expected a %s, but next element is a %s",
+                throw new IllegalStateException(
+                        "expected a %s, but next element is a %s".formatted(
                         clazz.getName(),
                         element.getClass().getName()
                 ));

@@ -154,27 +154,27 @@ public class PsiPythonMapper {
 
     public List<Statement> mapStatement(PsiElement element, BlockContext ctx) {
         try {
-            if (element instanceof PyClass) {
-                return singletonList(mapClassDeclarationStatement((PyClass) element, ctx));
-            } else if (element instanceof PyForStatement) {
-                return singletonList(mapForStatement((PyForStatement) element, ctx));
-            } else if (element instanceof PyFunction) {
-                return singletonList(mapFunction((PyFunction) element, ctx));
-            } else if (element instanceof PyIfStatement) {
-                return singletonList(mapIfStatement((PyIfStatement) element, ctx));
-            } else if (element instanceof PyMatchStatement) {
-                return singletonList(mapMatchStatement((PyMatchStatement) element, ctx));
-            } else if (element instanceof PyTryExceptStatement) {
-                return singletonList(mapTry((PyTryExceptStatement) element, ctx));
-            } else if (element instanceof PyWhileStatement) {
-                return singletonList(mapWhile((PyWhileStatement) element, ctx));
-            } else if (element instanceof PyWithStatement) {
-                return singletonList(mapWithStatement((PyWithStatement) element, ctx));
+            if (element instanceof PyClass class1) {
+                return singletonList(mapClassDeclarationStatement(class1, ctx));
+            } else if (element instanceof PyForStatement statement) {
+                return singletonList(mapForStatement(statement, ctx));
+            } else if (element instanceof PyFunction function) {
+                return singletonList(mapFunction(function, ctx));
+            } else if (element instanceof PyIfStatement statement) {
+                return singletonList(mapIfStatement(statement, ctx));
+            } else if (element instanceof PyMatchStatement statement) {
+                return singletonList(mapMatchStatement(statement, ctx));
+            } else if (element instanceof PyTryExceptStatement statement) {
+                return singletonList(mapTry(statement, ctx));
+            } else if (element instanceof PyWhileStatement statement) {
+                return singletonList(mapWhile(statement, ctx));
+            } else if (element instanceof PyWithStatement statement) {
+                return singletonList(mapWithStatement(statement, ctx));
             }
         } catch (Exception e) {
             throw new RuntimeException(
-                    String.format(
-                            "error processing compound statement of type %s in:\n--\n%s\n--",
+                    
+                            "error processing compound statement of type %s in:\n--\n%s\n--".formatted(
                             element.getClass().getSimpleName(),
                             element.getText()
                     ),
@@ -187,45 +187,45 @@ public class PsiPythonMapper {
 
     private List<Statement> mapSimpleStatement(PsiElement element) {
         try {
-            if (element instanceof PyAugAssignmentStatement) {
-                return singletonList(mapAugAssignmentStatement((PyAugAssignmentStatement) element));
-            } else if (element instanceof PyAssertStatement) {
-                return singletonList(mapAssertStatement((PyAssertStatement) element));
-            } else if (element instanceof PyAssignmentStatement) {
-                return singletonList(mapAssignmentStatement((PyAssignmentStatement) element));
-            } else if (element instanceof PyBreakStatement) {
-                return singletonList(mapBreakStatement((PyBreakStatement) element));
-            } else if (element instanceof PyContinueStatement) {
-                return singletonList(mapContinueStatement((PyContinueStatement) element));
-            } else if (element instanceof PyDelStatement) {
-                return singletonList(mapDelStatement((PyDelStatement) element));
-            } else if (element instanceof PyExpressionStatement) {
-                return singletonList(mapExpressionStatement((PyExpressionStatement) element));
-            } else if (element instanceof PyFromImportStatement) {
-                return mapFromImportStatement((PyFromImportStatement) element);
-            } else if (element instanceof PyGlobalStatement) {
-                return singletonList(mapVariableScopeStatement((PyGlobalStatement) element));
-            } else if (element instanceof PyImportStatement) {
-                return mapImportStatement((PyImportStatement) element);
-            } else if (element instanceof PyNonlocalStatement) {
-                return singletonList(mapVariableScopeStatement((PyNonlocalStatement) element));
-            } else if (element instanceof PyPassStatement) {
-                return singletonList(mapPassStatement((PyPassStatement) element));
-            } else if (element instanceof PyPrintStatement) {
-                return singletonList(mapPrintStatement((PyPrintStatement) element));
-            } else if (element instanceof PyRaiseStatement) {
-                return singletonList(mapRaiseStatement((PyRaiseStatement) element));
-            } else if (element instanceof PyReturnStatement) {
-                return singletonList(mapReturnStatement((PyReturnStatement) element));
-            } else if (element instanceof PyTypeDeclarationStatement) {
-                return singletonList(mapTypeDeclarationStatement((PyTypeDeclarationStatement) element));
+            if (element instanceof PyAugAssignmentStatement statement) {
+                return singletonList(mapAugAssignmentStatement(statement));
+            } else if (element instanceof PyAssertStatement statement) {
+                return singletonList(mapAssertStatement(statement));
+            } else if (element instanceof PyAssignmentStatement statement) {
+                return singletonList(mapAssignmentStatement(statement));
+            } else if (element instanceof PyBreakStatement statement) {
+                return singletonList(mapBreakStatement(statement));
+            } else if (element instanceof PyContinueStatement statement) {
+                return singletonList(mapContinueStatement(statement));
+            } else if (element instanceof PyDelStatement statement) {
+                return singletonList(mapDelStatement(statement));
+            } else if (element instanceof PyExpressionStatement statement) {
+                return singletonList(mapExpressionStatement(statement));
+            } else if (element instanceof PyFromImportStatement statement) {
+                return mapFromImportStatement(statement);
+            } else if (element instanceof PyGlobalStatement statement) {
+                return singletonList(mapVariableScopeStatement(statement));
+            } else if (element instanceof PyImportStatement statement) {
+                return mapImportStatement(statement);
+            } else if (element instanceof PyNonlocalStatement statement) {
+                return singletonList(mapVariableScopeStatement(statement));
+            } else if (element instanceof PyPassStatement statement) {
+                return singletonList(mapPassStatement(statement));
+            } else if (element instanceof PyPrintStatement statement) {
+                return singletonList(mapPrintStatement(statement));
+            } else if (element instanceof PyRaiseStatement statement) {
+                return singletonList(mapRaiseStatement(statement));
+            } else if (element instanceof PyReturnStatement statement) {
+                return singletonList(mapReturnStatement(statement));
+            } else if (element instanceof PyTypeDeclarationStatement statement) {
+                return singletonList(mapTypeDeclarationStatement(statement));
             } else {
                 throw new IllegalArgumentException("unknown PSI element type " + element.getNode().getElementType());
             }
         } catch (Exception e) {
             throw new RuntimeException(
-                    String.format(
-                            "error processing compound statement of type %s in:\n--\n%s\n--",
+                    
+                            "error processing compound statement of type %s in:\n--\n%s\n--".formatted(
                             element.getClass().getSimpleName(),
                             element.getText()
                     ),
@@ -481,15 +481,14 @@ public class PsiPythonMapper {
             Stack<J.FieldAccess> fieldAccessStack = new Stack<>();
             J.Identifier originalTarget = null;
             while (originalTarget == null) {
-                if (fromModuleExpr instanceof J.FieldAccess) {
-                    J.FieldAccess fieldAccess = (J.FieldAccess) fromModuleExpr;
+                if (fromModuleExpr instanceof J.FieldAccess fieldAccess) {
                     fieldAccessStack.add(fieldAccess);
                     fromModuleExpr = fieldAccess.getTarget();
-                } else if (fromModuleExpr instanceof J.Identifier) {
-                    originalTarget = (J.Identifier) fromModuleExpr;
+                } else if (fromModuleExpr instanceof J.Identifier identifier) {
+                    originalTarget = identifier;
                 } else {
-                    throw new IllegalStateException(String.format(
-                            "didn't expect a %s in an import qualifier",
+                    throw new IllegalStateException(
+                            "didn't expect a %s in an import qualifier".formatted(
                             fromModuleExpr.getClass()
                     ));
                 }
@@ -873,10 +872,10 @@ public class PsiPythonMapper {
     }
 
     private J.VariableDeclarations mapAsVariableDeclarations(PyExpression pyExpression) {
-        if (pyExpression instanceof PyTargetExpression) {
-            return mapTargetExpressionAsVariableDeclarations((PyTargetExpression) pyExpression);
-        } else if (pyExpression instanceof PyTupleExpression) {
-            return mapTupleAsVariableDeclarations((PyTupleExpression) pyExpression);
+        if (pyExpression instanceof PyTargetExpression expression) {
+            return mapTargetExpressionAsVariableDeclarations(expression);
+        } else if (pyExpression instanceof PyTupleExpression expression) {
+            return mapTupleAsVariableDeclarations(expression);
         } else {
             return new J.VariableDeclarations(
                     randomId(),
@@ -947,8 +946,8 @@ public class PsiPythonMapper {
         @Nullable JLeftPadded<Expression> initializer;
 
         Expression mapped = mapExpression(pyExpression).withPrefix(Space.EMPTY);
-        if (mapped instanceof J.Identifier) {
-            name = (J.Identifier) mapped;
+        if (mapped instanceof J.Identifier identifier) {
+            name = identifier;
             initializer = null;
         } else {
             name = new J.Identifier(randomId(), Space.EMPTY, EMPTY, "", null, null);
@@ -1040,8 +1039,7 @@ public class PsiPythonMapper {
         JLeftPadded<Expression> defaultValue;
         Py.TypeHint typeHint;
 
-        if (element instanceof PyNamedParameter) {
-            PyNamedParameter namedParameter = (PyNamedParameter) element;
+        if (element instanceof PyNamedParameter namedParameter) {
             name = expectIdentifier(namedParameter.getNameIdentifier());
             typeHint = mapTypeHintNullable(namedParameter.getAnnotation());
 
@@ -1066,8 +1064,8 @@ public class PsiPythonMapper {
             defaultValue = null;
             typeHint = null;
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "expected function parameter to be a NamedParameter or StarArgument; found: %s\n%s",
+            throw new IllegalArgumentException(
+                    "expected function parameter to be a NamedParameter or StarArgument; found: %s\n%s".formatted(
                     element.getClass().getSimpleName(),
                     element.getText()
             ));
@@ -1433,8 +1431,8 @@ public class PsiPythonMapper {
             final String containerIndent = outerCtx.fullIndent;
             final String fullIndent = firstPrefix.getIndent();
             if (!fullIndent.startsWith(containerIndent)) {
-                throw new IllegalStateException(String.format(
-                        "expected full block indent (%s) to start with container indent (%s)",
+                throw new IllegalStateException(
+                        "expected full block indent (%s) to start with container indent (%s)".formatted(
                         Space.build(fullIndent, emptyList()),
                         Space.build(containerIndent, emptyList())
                 ));
@@ -1579,67 +1577,67 @@ public class PsiPythonMapper {
                 return expectIdentifier(element);
             }
 
-            if (element instanceof PyPattern) {
-                return mapPattern((PyPattern) element);
+            if (element instanceof PyPattern pattern) {
+                return mapPattern(pattern);
             }
 
-            if (element instanceof PyAssignmentExpression) {
-                return mapAssignmentExpression((PyAssignmentExpression) element);
-            } else if (element instanceof PyBinaryExpression) {
-                return mapBinaryExpression((PyBinaryExpression) element);
-            } else if (element instanceof PyBoolLiteralExpression) {
-                return mapBooleanLiteral((PyBoolLiteralExpression) element);
-            } else if (element instanceof PyCallExpression) {
-                return mapCallExpression((PyCallExpression) element);
-            } else if (element instanceof PyComprehensionElement) {
-                return mapComprehensionElement((PyComprehensionElement) element);
-            } else if (element instanceof PyConditionalExpression) {
-                return mapConditionalExpression((PyConditionalExpression) element);
-            } else if (element instanceof PyDictLiteralExpression) {
-                return mapDictLiteralExpression((PyDictLiteralExpression) element);
-            } else if (element instanceof PyKeyValueExpression) {
-                return mapKeyValueExpression((PyKeyValueExpression) element);
-            } else if (element instanceof PyKeywordArgument) {
-                return mapKeywordArgument((PyKeywordArgument) element);
-            } else if (element instanceof PyLambdaExpression) {
-                return mapLambdaExpression((PyLambdaExpression) element);
-            } else if (element instanceof PyListLiteralExpression) {
-                return mapListLiteral((PyListLiteralExpression) element);
-            } else if (element instanceof PyNoneLiteralExpression) {
-                return mapNoneLiteral((PyNoneLiteralExpression) element);
-            } else if (element instanceof PyNumericLiteralExpression) {
-                return mapNumericLiteral((PyNumericLiteralExpression) element);
-            } else if (element instanceof PyParenthesizedExpression) {
-                return mapParenthesizedExpression((PyParenthesizedExpression) element);
-            } else if (element instanceof PyPrefixExpression) {
-                return mapPrefixExpression((PyPrefixExpression) element);
-            } else if (element instanceof PyReferenceExpression) {
-                return mapReferenceExpression((PyReferenceExpression) element);
-            } else if (element instanceof PySetLiteralExpression) {
-                return mapSetLiteral((PySetLiteralExpression) element);
-            } else if (element instanceof PySliceExpression) {
-                return mapSliceExpression((PySliceExpression) element);
-            } else if (element instanceof PyStarArgument) {
-                return mapStarArgument((PyStarArgument) element);
-            } else if (element instanceof PyStarExpression) {
-                return mapStarExpression((PyStarExpression) element);
-            } else if (element instanceof PySubscriptionExpression) {
-                return mapSubscription((PySubscriptionExpression) element);
-            } else if (element instanceof PyStringLiteralExpression) {
-                return mapStringLiteral((PyStringLiteralExpression) element);
-            } else if (element instanceof PyTargetExpression) {
-                return mapTargetExpression((PyTargetExpression) element);
-            } else if (element instanceof PyTupleExpression) {
-                return mapTupleLiteral((PyTupleExpression) element);
-            } else if (element instanceof PyYieldExpression) {
-                return mapYieldExpression((PyYieldExpression) element);
+            if (element instanceof PyAssignmentExpression expression) {
+                return mapAssignmentExpression(expression);
+            } else if (element instanceof PyBinaryExpression expression) {
+                return mapBinaryExpression(expression);
+            } else if (element instanceof PyBoolLiteralExpression expression) {
+                return mapBooleanLiteral(expression);
+            } else if (element instanceof PyCallExpression expression) {
+                return mapCallExpression(expression);
+            } else if (element instanceof PyComprehensionElement comprehensionElement) {
+                return mapComprehensionElement(comprehensionElement);
+            } else if (element instanceof PyConditionalExpression expression) {
+                return mapConditionalExpression(expression);
+            } else if (element instanceof PyDictLiteralExpression expression) {
+                return mapDictLiteralExpression(expression);
+            } else if (element instanceof PyKeyValueExpression expression) {
+                return mapKeyValueExpression(expression);
+            } else if (element instanceof PyKeywordArgument argument) {
+                return mapKeywordArgument(argument);
+            } else if (element instanceof PyLambdaExpression expression) {
+                return mapLambdaExpression(expression);
+            } else if (element instanceof PyListLiteralExpression expression) {
+                return mapListLiteral(expression);
+            } else if (element instanceof PyNoneLiteralExpression expression) {
+                return mapNoneLiteral(expression);
+            } else if (element instanceof PyNumericLiteralExpression expression) {
+                return mapNumericLiteral(expression);
+            } else if (element instanceof PyParenthesizedExpression expression) {
+                return mapParenthesizedExpression(expression);
+            } else if (element instanceof PyPrefixExpression expression) {
+                return mapPrefixExpression(expression);
+            } else if (element instanceof PyReferenceExpression expression) {
+                return mapReferenceExpression(expression);
+            } else if (element instanceof PySetLiteralExpression expression) {
+                return mapSetLiteral(expression);
+            } else if (element instanceof PySliceExpression expression) {
+                return mapSliceExpression(expression);
+            } else if (element instanceof PyStarArgument argument) {
+                return mapStarArgument(argument);
+            } else if (element instanceof PyStarExpression expression) {
+                return mapStarExpression(expression);
+            } else if (element instanceof PySubscriptionExpression expression) {
+                return mapSubscription(expression);
+            } else if (element instanceof PyStringLiteralExpression expression) {
+                return mapStringLiteral(expression);
+            } else if (element instanceof PyTargetExpression expression) {
+                return mapTargetExpression(expression);
+            } else if (element instanceof PyTupleExpression expression) {
+                return mapTupleLiteral(expression);
+            } else if (element instanceof PyYieldExpression expression) {
+                return mapYieldExpression(expression);
             } else {
                 throw new IllegalArgumentException("unknown PSI element type " + element.getNode().getElementType());
             }
         } catch (Exception e) {
             throw new RuntimeException(
-                    String.format(
-                            "error processing expression of type %s in:\n--\n%s\n--",
+                    
+                            "error processing expression of type %s in:\n--\n%s\n--".formatted(
                             element.getClass().getSimpleName(),
                             element.getText()
                     ),
@@ -1730,20 +1728,19 @@ public class PsiPythonMapper {
             children = JContainer.build(
                     mapExpressionsAsRightPadded(pattern.getChildren())
             );
-        } else if (pattern instanceof PyKeywordPattern) {
+        } else if (pattern instanceof PyKeywordPattern keywordPattern) {
             kind = Py.MatchCase.Pattern.Kind.KEYWORD;
-            PyKeywordPattern keywordPattern = (PyKeywordPattern) pattern;
             children = JContainer.build(
                     mapExpressionsAsRightPadded(new PsiElement[]{
                             keywordPattern.getKeywordElement(),
                             keywordPattern.getValuePattern()
                     })
             );
-        } else if (pattern instanceof PyLiteralPattern) {
+        } else if (pattern instanceof PyLiteralPattern literalPattern) {
             kind = Py.MatchCase.Pattern.Kind.LITERAL;
             children = JContainer.build(
                     singletonList(
-                            mapExpressionAsRightPadded(((PyLiteralPattern) pattern).getExpression())
+                            mapExpressionAsRightPadded(literalPattern.getExpression())
                     )
             );
         } else if (pattern instanceof PyMappingPattern) {
@@ -1787,7 +1784,7 @@ public class PsiPythonMapper {
             children = JContainer.empty();
         } else {
             throw new IllegalArgumentException(
-                    String.format("unhandled case pattern of type %s", pattern.getClass().getSimpleName())
+                    "unhandled case pattern of type %s".formatted(pattern.getClass().getSimpleName())
             );
         }
 
@@ -1815,8 +1812,8 @@ public class PsiPythonMapper {
             } else if (kindToken == PyTokenTypes.COLON) {
                 kind = Py.TypeHint.Kind.VARIABLE_TYPE;
             } else {
-                throw new IllegalArgumentException(String.format(
-                        "unrecognized type hint start token: %s",
+                throw new IllegalArgumentException(
+                        "unrecognized type hint start token: %s".formatted(
                         kindToken
                 ));
             }
@@ -1967,15 +1964,14 @@ public class PsiPythonMapper {
         } else if (element instanceof PyGeneratorExpression) {
             kind = Py.ComprehensionExpression.Kind.GENERATOR;
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "unknown comprehension type: %s",
+            throw new IllegalArgumentException(
+                    "unknown comprehension type: %s".formatted(
                     element.getNode().getElementType()
             ));
         }
         List<Py.ComprehensionExpression.Clause> clauses = new ArrayList<>();
         for (PyComprehensionComponent ifOrFor : element.getComponents()) {
-            if (ifOrFor instanceof PyComprehensionForComponent) {
-                PyComprehensionForComponent pyFor = (PyComprehensionForComponent) ifOrFor;
+            if (ifOrFor instanceof PyComprehensionForComponent pyFor) {
                 PsiElement forKeyword = findPreviousSiblingToken(pyFor.getIteratorVariable(), PyTokenTypes.FOR_KEYWORD);
                 PsiElement inKeyword = findPreviousSiblingToken(pyFor.getIteratedList(), PyTokenTypes.IN_KEYWORD);
                 Expression iteratorVariable = mapExpression(pyFor.getIteratorVariable());
@@ -1988,8 +1984,7 @@ public class PsiPythonMapper {
                         JLeftPadded.build(iteratedList).withBefore(spaceBefore(inKeyword)),
                         null
                 ));
-            } else if (ifOrFor instanceof PyComprehensionIfComponent) {
-                PyComprehensionIfComponent pyif = (PyComprehensionIfComponent) ifOrFor;
+            } else if (ifOrFor instanceof PyComprehensionIfComponent pyif) {
                 PsiElement ifKeyword = findPreviousSiblingToken(pyif.getTest(), PyTokenTypes.IF_KEYWORD);
                 Py.ComprehensionExpression.Condition condition = new Py.ComprehensionExpression.Condition(
                         randomId(),
@@ -2079,8 +2074,8 @@ public class PsiPythonMapper {
         List<JRightPadded<Expression>> expressions;
         if (pyExpression == null) {
             expressions = emptyList();
-        } else if (pyExpression instanceof PyTupleExpression) {
-            expressions = mapExpressionsAsRightPadded(((PyTupleExpression) pyExpression).getElements());
+        } else if (pyExpression instanceof PyTupleExpression expression) {
+            expressions = mapExpressionsAsRightPadded(expression.getElements());
             expressions = ListUtils.mapFirst(
                     expressions,
                     expr -> expr.withElement(expr.getElement().withPrefix(spaceBefore(pyExpression)))
@@ -2292,7 +2287,7 @@ public class PsiPythonMapper {
             ot = J.Unary.Type.Complement;
         } else {
             throw new IllegalArgumentException(
-                    String.format("unhandled prefix expression with type %s", op)
+                    "unhandled prefix expression with type %s".formatted(op)
             );
         }
         return new J.Unary(
@@ -2361,13 +2356,11 @@ public class PsiPythonMapper {
         J.Identifier functionName;
         @Nullable JRightPadded<Expression> select;
 
-        if (callee instanceof J.Identifier) {
+        if (callee instanceof J.Identifier identifier) {
             // e.g. `print(42)`
-            functionName = (J.Identifier) callee;
+            functionName = identifier;
             select = null;
-        } else if (callee instanceof J.FieldAccess) {
-            // e.g. `math.sin(2)` or `(..complicated..).foo()`
-            J.FieldAccess fieldAccess = (J.FieldAccess) callee;
+        } else if (callee instanceof J.FieldAccess fieldAccess) {
             functionName = fieldAccess.getName();
             select = JRightPadded.build(fieldAccess.getTarget())
                     .withAfter(fieldAccess.getPadding().getName().getBefore());
@@ -2417,8 +2410,8 @@ public class PsiPythonMapper {
             boolean lastPartWasColon = false;
             for (ASTNode slicePartNode : pySlice.getNode().getChildren(null)) {
                 PsiElement slicePart = slicePartNode.getPsi();
-                if (slicePart instanceof PyExpression) {
-                    pyArgs.add((PyExpression) slicePart);
+                if (slicePart instanceof PyExpression expression) {
+                    pyArgs.add(expression);
                     lastPartWasColon = false;
                 } else {
                     lastPartWasColon = true;
@@ -2581,8 +2574,8 @@ public class PsiPythonMapper {
     }
 
     private J.Identifier expectIdentifier(Expression expression) {
-        if (expression instanceof J.Identifier) {
-            return (J.Identifier) expression;
+        if (expression instanceof J.Identifier identifier) {
+            return identifier;
         }
         throw new RuntimeException("expected Identifier, but found: " + expression.getClass().getSimpleName());
     }

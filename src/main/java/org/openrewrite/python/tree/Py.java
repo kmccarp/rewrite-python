@@ -345,8 +345,8 @@ public interface Py extends J {
             J j = v.visit(getExpression(), p);
             if (j instanceof ExpressionStatement) {
                 return j;
-            } else if (j instanceof Expression) {
-                return withExpression((Expression) j);
+            } else if (j instanceof Expression expression1) {
+                return withExpression(expression1);
             }
             return j;
         }

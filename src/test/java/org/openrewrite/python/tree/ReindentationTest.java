@@ -43,16 +43,16 @@ class ReindentationTest implements RewriteTest {
                 List<Statement> copied = new ArrayList<>();
                 Set<String> existing = new HashSet<>();
                 for (Statement statement : block.getStatements()) {
-                    if (statement instanceof J.MethodDeclaration) {
-                        existing.add(((J.MethodDeclaration) statement).getSimpleName());
+                    if (statement instanceof J.MethodDeclaration declaration) {
+                        existing.add(declaration.getSimpleName());
                     }
                 }
                 for (Statement statement : block.getStatements()) {
-                    if (statement instanceof J.ClassDeclaration) {
-                        J.Block body = ((J.ClassDeclaration) statement).getBody();
+                    if (statement instanceof J.ClassDeclaration declaration) {
+                        J.Block body = declaration.getBody();
                         for (Statement classStatement : body.getStatements()) {
-                            if (classStatement instanceof J.MethodDeclaration) {
-                                if (existing.add(((J.MethodDeclaration) classStatement).getSimpleName())) {
+                            if (classStatement instanceof J.MethodDeclaration declaration) {
+                                if (existing.add(declaration.getSimpleName())) {
                                     copied.add(classStatement);
                                 }
                             }

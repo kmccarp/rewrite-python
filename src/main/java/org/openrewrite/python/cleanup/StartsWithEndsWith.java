@@ -43,8 +43,10 @@ public class StartsWithEndsWith extends Recipe {
 
     @Override
     public String getDescription() {
-        return "`startswith` and `endswith` methods of the `str` object accept a tuple of strings to match against. " +
-               "When multiple calls to `startswith` or `endswith` are made on the same string, they can be combined into a single call with a tuple of strings.";
+        return """
+               `startswith` and `endswith` methods of the `str` object accept a tuple of strings to match against. \
+               When multiple calls to `startswith` or `endswith` are made on the same string, they can be combined into a single call with a tuple of strings.\
+               """;
     }
 
     @Override
@@ -58,9 +60,7 @@ public class StartsWithEndsWith extends Recipe {
             if (binary.getOperator() == J.Binary.Type.Or) {
                 Expression left = binary.getLeft();
                 Expression right = binary.getRight();
-                if (left instanceof J.MethodInvocation && right instanceof J.MethodInvocation) {
-                    J.MethodInvocation leftMethod = (J.MethodInvocation) left;
-                    J.MethodInvocation rightMethod = (J.MethodInvocation) right;
+                if (left instanceof J.MethodInvocation leftMethod && right instanceof J.MethodInvocation rightMethod) {
                     boolean bothStartsWith = "startswith".equals(leftMethod.getSimpleName()) && "startswith".equals(rightMethod.getSimpleName());
                     boolean bothEndsWith = "endswith".equals(leftMethod.getSimpleName()) && "endswith".equals(rightMethod.getSimpleName());
                     if ((bothStartsWith || bothEndsWith) &&
@@ -74,9 +74,9 @@ public class StartsWithEndsWith extends Recipe {
                                 getSimplestRightExpressions(rightMethod),
                                 e -> e.withPrefix(Space.SINGLE_SPACE)
                         );
-                        if (leftMethod.getArguments().get(0) instanceof J.MethodInvocation &&
-                            "tuple".equals(((J.MethodInvocation) leftMethod.getArguments().get(0)).getSimpleName())) {
-                            J.MethodInvocation tuple = (J.MethodInvocation) leftMethod.getArguments().get(0);
+                        if (leftMethod.getArguments().getFirst() instanceof J.MethodInvocation &&
+                            "tuple".equals(((J.MethodInvocation) leftMethod.getArguments().getFirst()).getSimpleName())) {
+                            J.MethodInvocation tuple = (J.MethodInvocation) leftMethod.getArguments().getFirst();
 
                             tuple = tuple.withArguments(ListUtils.mapFirst(tuple.getArguments(), arg -> {
                                 assert arg instanceof J.NewArray;
@@ -91,7 +91,7 @@ public class StartsWithEndsWith extends Recipe {
                         }
                         return leftMethod.withArguments(singletonList(
                                 createTuple(
-                                        leftMethod.getArguments().get(0),
+                                        leftMethod.getArguments().getFirst(),
                                         rightExpressionFinal
                                 )
                         )).withPrefix(binary.getPrefix());
@@ -105,9 +105,9 @@ public class StartsWithEndsWith extends Recipe {
         private static List<Expression> getSimplestRightExpressions(J.MethodInvocation rightMethod) {
             // The `rightMethod` is already a call to `startsWith` or `endsWith`
             // If the right side is already a tuple, then unpack the elements
-            if (rightMethod.getArguments().get(0) instanceof J.MethodInvocation &&
-                "tuple".equals(((J.MethodInvocation) rightMethod.getArguments().get(0)).getSimpleName())) {
-                J.NewArray newArray = (J.NewArray) ((J.MethodInvocation) rightMethod.getArguments().get(0)).getArguments().get(0);
+            if (rightMethod.getArguments().getFirst() instanceof J.MethodInvocation &&
+                "tuple".equals(((J.MethodInvocation) rightMethod.getArguments().getFirst()).getSimpleName())) {
+                J.NewArray newArray = (J.NewArray) ((J.MethodInvocation) rightMethod.getArguments().getFirst()).getArguments().getFirst();
                 return newArray.getInitializer();
             } else {
                 // Otherwise, the right side is a single element

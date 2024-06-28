@@ -39,7 +39,7 @@ public class PythonSpacesVisitor<P> extends PythonIsoVisitor<P> {
         boolean styleBeforeMethodDeclarationParentheses = false;
         m = m.getPadding().withParameters(
                 spaceBefore(m.getPadding().getParameters(), styleBeforeMethodDeclarationParentheses));
-        if (m.getParameters().isEmpty() || m.getParameters().iterator().next() instanceof J.Empty) {
+        if (m.getParameters().isEmpty() || m.getParameters().getFirst() instanceof J.Empty) {
             boolean useSpace = false;
             m = m.getPadding().withParameters(
                     m.getPadding().getParameters().getPadding().withElements(

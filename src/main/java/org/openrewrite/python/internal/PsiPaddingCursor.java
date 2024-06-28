@@ -96,10 +96,10 @@ public class PsiPaddingCursor {
 
             element = node.getPsi();
         }
-        if (element instanceof PsiWhiteSpace) {
-            return new State.WhitespaceNext((PsiWhiteSpace) element, 0);
-        } else if (element instanceof PsiComment) {
-            return new State.CommentNext((PsiComment) element);
+        if (element instanceof PsiWhiteSpace space) {
+            return new State.WhitespaceNext(space, 0);
+        } else if (element instanceof PsiComment comment) {
+            return new State.CommentNext(comment);
         } else {
             return new State.StoppedAtElement(element);
         }
@@ -407,8 +407,8 @@ public class PsiPaddingCursor {
         final @Nullable Integer currentOffset = state.getSourceOffset();
         final int expectedOffset = actualNodeOffset(expectedNext);
         if (currentOffset == null || currentOffset != expectedOffset) {
-            throw new IllegalStateException(String.format(
-                    "did not stop (%d) where expected (%d);\n%s\n%s",
+            throw new IllegalStateException(
+                    "did not stop (%d) where expected (%d);\n%s\n%s".formatted(
                     currentOffset == null ? -1 : currentOffset,
                     expectedOffset,
                     printDebuggingMessage("STOPPED HERE"),
@@ -419,8 +419,8 @@ public class PsiPaddingCursor {
 
     public void expectEOF() {
         if (!(state instanceof State.StoppedAtEOF)) {
-            throw new IllegalStateException(String.format(
-                    "did not stop where expected (at eof);\n%s",
+            throw new IllegalStateException(
+                    "did not stop where expected (at eof);\n%s".formatted(
                     printDebuggingMessage("STOPPED HERE")
             ));
         }
